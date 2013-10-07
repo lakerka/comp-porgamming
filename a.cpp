@@ -80,18 +80,6 @@ template<class T> inline T sqr (T x) {return x * x;}
   //in.close();
 //}
 
-template<class edge> struct Graph
-{
-  vector<vector<edge> > adj;
-  Graph (int n) {adj.clear (); adj.resize (n + 5);}
-  Graph () {adj.clear (); }
-  void resize (int n) {adj.resize (n + 5); }
-  void add (int s, edge e){adj[s].push_back (e);}
-  void del (int s, edge e) {adj[s].erase (find (iter (adj[s]), e)); }
-  int deg (int v) {return adj[v].size (); }
-  vector<edge>& operator [](int t) {return adj[t];}
-};
-
 const string OUT = ".out";
 const string IN = ".in";
 
@@ -126,27 +114,9 @@ LL lcm(LL a, LL b) {
 	//}
 //}
 
-//a- number, p - degree, mod - modulus
-//complexity log(p)
-int toPower(int a, int p, LL mod){   
-    LL r = 1;
-	while (p) {
-		if (p & 1) r = LL(r) * LL(a) % LL(mod);
-		p >>= 1; 
-        a = LL(a) * LL(a) % LL(mod);
-    }
-	return r;
-}
-
-
 const int MAXN = 200 + 3;
 
-int n, wins, capacity;
-int a[MAXN];
-LD p[MAXN];
-LD val[MAXN][MAXN][MAXN];
-LD probability = 0;
-
+int n;
 
 const string FILENAME = "";
 int main () {
