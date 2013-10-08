@@ -1,3 +1,4 @@
+//Interpreter
 #include <tr1/unordered_map>
 #include <streambuf>
 #include <vector>
@@ -93,112 +94,12 @@ LL lcm(LL a, LL b) {
 	return a/gcd(a, b)*b;
 }
 
-struct Point {
-    int x, y;
-    Point() {
-        this->x = 0;
-        this->y = 0;
-    }
-    Point(int x, int y) {
-        this->x = x;
-        this->y = y;
-    }
-    inline Point operator = (const int &val) {
-        this->x = val;
-        this->y = val;
-    }
-
-    inline Point operator = (const Point &p) {
-        this->x = p.x;
-        this->y = p.y;
-    }
-};
-
-struct Rect {
-    Point upleft, downRight;
-    Rect() {
-        this->upleft = Point();
-        this->downRight = Point();
-    }
-    Rect(Point l, Point r) {
-        this->upleft = l;
-        this->downRight = r;
-    }
-    Rect(int lx, int ly, int rx, int ry) {
-        this->upleft.x = lx;
-        this->upleft.y = ly;
-        this->downRight.x = rx;
-        this->downRight.y = ry;
-    }
-    Rect(Point p) {
-        this->upleft = p;
-        this->downRight = p;
-    }
-    
-};
-
-const int MAXN = 250 + 3;
-char col[MAXN][MAXN];
-bool taken[MAXN][MAXN];
-int n; // column
-int m; // row
-
-void color(Rect rect, char color) {
-    for (int j = rect.upleft.y; j >= rect.downRight.y; j--) {
-        for (int i = rect.upleft.x; i <= rect.downRight.x; i++) {
-            col[j][i] = color;
-        }
-    }
-}
-
-void colorAdj(Point p, char color) {
-    stack<Point> s;
-    vector<Point> t;
-    s.push(p);
-    char curColor;
-    while (!s.empty()) {
-        p = s.top();
-        s.pop();
-        curColor = col[p.y][p.x];
-        col[p.y][p.x] = color;
-        for (int i = -1; i < 2; i+=2) {
-
-            if (col[p.y][p.x + i] == color
-                && p.x + i > 0 && p.x + i <= m
-                && !taken[p.y][p.x + i]) {
-
-                Point point = Point(p.x + i, p.y); 
-                taken[point.y][point.x] = true;
-                s.push(point);
-                t.push_back(point);
-            }
-            if (col[p.y + i][p.x] == color 
-                && p.y + i > 0 && p.y + i <= n
-                && !taken[p.y + i][p.x]) {
-
-                Point point = Point(p.x, p.y + i); 
-                taken[point.y][point.x] = true;
-                s.push(point);
-                t.push_back(point);
-            }
-        }
-    }
-    int size = t.size();
-    REP(i, size) {
-        p = t.back();
-        taken[p.y][p.x] = false;
-        t.pop_back();
-    }
-    
-}
-
 template <typename T>
 T StringToNumber (const string &Text) {
     istringstream ss(Text);
     T result;
     return ss >> result ? result : 0;
 }
-
 int getInt(string s, int &poz) {
     int len = s.length();
     char c;
@@ -219,42 +120,114 @@ int getInt(string s, int &poz) {
     return an;
 }
 
+char getChar(string s, int &poz) {
+    int len = s.length();
+    char c;
+    while(poz < len) {
+        c = s[poz];
+        if ((c >= 'A') && (c <= 'Z')) {
+            return c;
+        }
+        poz++;
+    }
+    return 0;
+}
+
+
+const int MAXN = 1200 + 3;
+const int MOD = 1000;
+int reg[10];
+int ram[MAXN];
+int cases;
+
+void clearAll() {
+    for (int i = 0; i < 10; i++) {
+        reg[i] = 0;
+    }
+    for (int i = 0; i < MAXN; i++) {
+        ram[i] = 0;
+    }
+}
+
+
 const string FILENAME = "";
 int main () {
     //ios_base::sync_with_stdio (false);
+    cin >> cases;
     string line;
+    int commnad;
+    int ramSize = 0, counter = 0;
     int poz = 0;
-    while(getline(cin, line)) {
-        char c = line[0];
-        switch (c) {
-        case 'I' : 
-             
-            ; 
-            break;
-        case 'C' : ; 
-            break;
-        case 'L' : ;
-            break;
-        case 'V' : ;
-            break;
-        case 'H' : ;
-            break;
-        case 'K' : ;
-            break;
-        case 'F' : ;
-            break;
-        case 'S' : ;
-            break;
-        case 'X' : return 0;
-            break;
+    getline(cin, line);
+    bool stop;
+    getline(cin, line);
 
+    for (int i = 0; i < cases; i++) {
+        clearAll();
+        counter = 0;
+        ramSize = 0;
+        counter = 0;
+        while(getline(cin, line) 
+                && line != "" 
+                && line != "\n"
+                && line != "\r\n") {
+            poz = 0;
+            int val = getInt(line, poz);
+            ram[ramSize] = val;
+            ramSize++;
+            if (cin.eof()) {
+                break;
+            }
+        }       
+        stop = false;
+        for (int j = 0; j < 1000 && !stop; j++) {
+            commnad  = ram[j] / 100;
+            int s, f;
+            s = ((ram[j]/10) % 10);
+            f = ram[j] % 10;
+            counter++;
+            switch (commnad) {
+                case 1 : 
+                    if (i == 0) {
+                        cout << counter << endl;
+                    }else {
+                        cout << endl << counter << endl;
+                    }
+                    stop = true;
+                    break;
+                case 2 :
+                    reg[s] = f;
+                    break;
+                case 3 : 
+                    reg[s] = (reg[s] + f) % MOD;
+                    break;
+                case 4 : 
+                    reg[s] = (reg[s]*f) % MOD;
+                    break;
+                case 5 : 
+                    reg[s] = (reg[f]) % MOD;
+                    break;
+                case 6 : 
+                    reg[s] = (reg[s] + reg[f]) % MOD;
+                    break;
+                case 7 : 
+                    reg[s] = (reg[s]*reg[f]) % MOD;
+                    break;
+                case 8 :
+                    reg[s] = (ram[reg[f]]) % MOD;
+                    break;
+                case 9 :
+                    ram[reg[f]] = reg[s] % MOD;
+                    break;
+                case 0 :
+                    if (reg[f]!=0) {
+                        int val = reg[s];
+                        j = val % MOD;
+                        j--;
+                    }
+                    break;
+            }
         }
     }
-    //FILE *out;
-    //out = fopen((FILENAME+OUT).c_str(), "w");
-    //FILE *in;
-    //in = fopen((FILENAME+IN).c_str(), "r");
-    //fclose(in);
-    //fclose(out);
     return 0;
 }
