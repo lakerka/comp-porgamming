@@ -71,61 +71,44 @@ template<class T> inline bool chkmin (T &a, T b) {return a > b ? a = b, true : f
 template<class T> inline bool chkmax (T &a, T b) {return a < b ? a = b, true : false;}
 template<class T> inline T sqr (T x) {return x * x;}
 
-//read all file
-//void read() {
-  //ifstream in("calfflac.in");
-  //string init((istreambuf_iterator<char>(in)),
-                  //istreambuf_iterator<char>());
-  //cout << init << endl;
-  //in.close();
-//}
-
-const string OUT = ".out";
-const string IN = ".in";
-
-LL gcd(LL a, LL b) {
-	if (b == 0) return a;
-	return gcd(b, a%b);
-}
-
-LL lcm(LL a, LL b) {
-	return a/gcd(a, b)*b;
-}
-
-//const int MAXP = int(1e6);
-//const int MAXPRIME = int(1e5);
-//int prime[MAXPRIME];
-//int isPrime[MAXP];
-//void erastoten() {
-	//int i;
-	//isPrime[2];
-	//for(int i = 3; i < MAXP; i+= 2) {
-		//isPrime[i] = true;
-	//}
-	//int j;
-	//for (i = 3; i < MAXP; i += 2) {
-		//if (isPrime[i]) {
-			//j = i+i;
-			//while(j < MAXP) {
-				//isPrime[j] = false;	
-				//j += i;
-			//}
-		//}
-	//}
-//}
 
 const int MAXN = 200 + 3;
 
-int n;
+int n, p;
 
 const string FILENAME = "";
 int main () {
-    //ios_base::sync_with_stdio (false);
-    //FILE *out;
-	//out = fopen((FILENAME+OUT).c_str(), "w");
-	//FILE *in;
-	//in = fopen((FILENAME+IN).c_str(), "r");
-	//fclose(in);
-	//fclose(out);
+    set<int> lostDays;
+    int t;
+    cin >> t;
+    for (int i = 0; i < t; i++) {
+        lostDays.clear();
+        scanf("%d", &n);
+        scanf("%d", &p);
+        int hartal;
+        for (int i = 0; i < p; i++) {
+            scanf("%d", &hartal);
+            int k = 1;
+            int val;
+            while (hartal*k <= n) {
+                val = hartal*k;
+                if (val % 7 != 6) {
+                    lostDays.insert(val);
+                }
+                k++;
+                if (k % 7 == 0) {
+                    k++;
+                }
+            }
+        }
+        //set<int>::iterator it;
+        //cout << endl;
+        //for (it=lostDays.begin(); it!=lostDays.end(); ++it)
+            //cout << ' ' << *it;
+        //cout << endl;
+        int lostDaysCount = lostDays.size();
+        cout << lostDaysCount << endl;
+    }
+    lostDays.clear();
     return 0;
 }

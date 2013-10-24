@@ -127,5 +127,5 @@ int main () {
 	//in = fopen((FILENAME+IN).c_str(), "r");
 	//fclose(in);
 	//fclose(out);
-    return 0;
+  return 0;
 }

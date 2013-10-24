@@ -114,18 +114,36 @@ LL lcm(LL a, LL b) {
 	//}
 //}
 
-const int MAXN = 200 + 3;
-
+const int MAXN = int(3*1e3) + 3;
 int n;
+int is[MAXN];
 
 const string FILENAME = "";
 int main () {
-    //ios_base::sync_with_stdio (false);
-    //FILE *out;
-	//out = fopen((FILENAME+OUT).c_str(), "w");
-	//FILE *in;
-	//in = fopen((FILENAME+IN).c_str(), "r");
-	//fclose(in);
-	//fclose(out);
+    int f, s; 
+    while (cin >> n) {
+        cin >> f;
+        int val;
+        for (int i = 1; i < n; i++) {
+            cin >> s;
+            val = abs(f-s);
+            if (val < n) {
+                is[abs(f-s)] = true;
+            }
+            f = s;
+        }
+        bool joly = true;
+        for (int i = 1; i < n; i++) {
+            if (!is[i]) {
+                joly = false;
+            }
+            is[i] = false;
+        }
+        if (joly) {
+            cout << "Jolly" << endl;
+        }else {
+            cout << "Not jolly" << endl;
+        }
+    }
     return 0;
 }
